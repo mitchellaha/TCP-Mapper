@@ -34,7 +34,7 @@ class tcpCheck:
 
     Examples
     --------
-    >>> tcpDict = tcpCheck("Root\SubDir\\Fake Rapidplan TCP File.tcp")
+    >>> tcpDict = tcpCheck("Root\\SubDir\\Fake Rapidplan TCP File.tcp")
 
     >>> tcpDict.dict()
 
@@ -74,12 +74,12 @@ class tcpCheck:
         IF the Regex Test Fails for Some Reason, will return False and Log the Error.
         """
         regexTest = re.search(r"\{.*\:\{.*\:.*\}\}", self.firstLine())
+        reTest = regexTest.group(0)
         if regexTest:
-            reTest = regexTest.group(0)
             return reTest
         else:
             logging.warning("Regex Test Failed For File String : %s", self.firstLine())
-            return False
+            return reTest
 
     def dict(self):
         """
