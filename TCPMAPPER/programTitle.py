@@ -7,6 +7,6 @@ programTitle = """\
    ██║   ╚██████╗██║         ██║ ╚═╝ ██║██║  ██║██║     ██║     ███████╗██║  ██║
    ╚═╝    ╚═════╝╚═╝         ╚═╝     ╚═╝╚═╝  ╚═╝╚═╝     ╚═╝     ╚══════╝╚═╝  ╚═╝
                                                                                                            
-      Author: Mitch A.           Version: 1.0.0
+      Author: Mitch A.           Version: 1.0.5
       License: MIT               GitHub: https://github.com/mitchellaha/TCP-Mapper
 """

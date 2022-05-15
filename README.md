@@ -1,45 +1,30 @@
 # TCP-Mapper
 
-Extracts JSON String From .tcp Files in Provided Directory and Outputs to **.json** or **.geojson** feature collection.
+Extracts Information From .tcp & .tct Files
 
-### Python Environment Setup
+## Guide
 
-1. Setup The Environment
+1. Setup The Python Environment
 
-    ~~~
-    $ python3 -m venv env
-    ~~~
+    ```$ python3 -m venv env```
 
-2. Set The Environment
+    ```$ source env/bin/activate```
 
-    ~~~
-    $ source env/bin/activate
-    ~~~
+    ```$ pip install -r requirements.txt```
 
-3. Install Dependencies 
+2. Run main.py
 
-    ~~~
-    $ pip install -r requirements.txt
-    ~~~
+    ```$ python main.py```
 
-4. Confirm Python Environment
+3. Enter File Path or Directory to Process
 
-    ~~~
-    $ which python
-    ~~~
+    ```$ python main.py /path/to/file/or/directory```
 
-----
+## To-Do
 
-### Build Guide
-
-Single File Standalone Build
-
-```
-pyinstaller -F -i src\ico\icon.ico main.py
-```
-
-Un-Packed Standalone Build
-
-```
-pyinstaller -F -i src\ico\icon.ico main.py
-```
+- [ ] Add Support For Directories (Recursive)
+- [ ] Add GeoJSON Support
+- [ ] Add Support For Arguments
+- [ ] Add Logging?
+- [ ] Add Documentation
+- [ ] Release with executable file
