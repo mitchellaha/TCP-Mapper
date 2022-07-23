@@ -1,6 +1,6 @@
 # TCP-Mapper
 
-Extracts Information From .tcp & .tct Files
+....Info....
 
 ## Guide
 
@@ -12,19 +12,8 @@ Extracts Information From .tcp & .tct Files
 
     ```$ pip install -r requirements.txt```
 
-2. Run main.py
+2. Add MongoDB SRV URL To Environment Variables
 
-    ```$ python main.py```
+    ```$ export MONGO_SRV_URL="mongodb+srv://<....>"```
 
-3. Enter File Path or Directory to Process
-
-    ```$ python main.py /path/to/file/or/directory```
-
-## To-Do
-
-- [ ] Add Support For Directories (Recursive)
-- [ ] Add GeoJSON Support
-- [ ] Add Support For Arguments
-- [ ] Add Logging?
-- [ ] Add Documentation
-- [ ] Release with executable file
+3. ????....????

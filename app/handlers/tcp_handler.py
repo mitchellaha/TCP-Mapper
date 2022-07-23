@@ -1,50 +1,49 @@
-import os
 import json
-from datetime import datetime as dt
+import os
 import re
+from datetime import datetime as dt
 
 
-def getFileType(fileName):  # ! Overall Useless Function > Consider Deletion
+def get_file_type(FileName):  # ! Overall Useless Function > Consider Deletion > ?ALSO SEMI DUPLICATE?
     """
     Returns the File Type if TCP, TCT, or PDF
     """
-    if fileName.lower().endswith('.tcp'):
+    if FileName.lower().endswith('.tcp'):
         return "TCP"
-    elif fileName.lower().endswith('.tct'):
+    elif FileName.lower().endswith('.tct'):
         return "TCT"
-    elif fileName.lower().endswith('.pdf'):
+    elif FileName.lower().endswith('.pdf'):
         return "PDF"
     else:
         return "UNKNOWN"
 
 
-def firstLine(fullLocation):
+def tcp_first_line(FilePath):
     """
     Opens the TCP File and Returns the First Text Line of the TCP File
     """
-    with open(fullLocation, "r", errors="ignore", encoding="utf-8") as tcp:
+    with open(FilePath, "r", errors="ignore", encoding="utf-8") as tcp:
         first_line = tcp.readline()
     return first_line
 
 
-def findJsonRegex(string):
+def json_regex_test(String):
     """
     Finds the JSON String in the TCP File and returns the JSON String
     """
-    jsonString = re.findall(r'{.*}', string)
+    jsonString = re.findall(r'{.*}', String)
     if len(jsonString) > 1:
-        print("findJsonRegex: Error Found Multiple for: \n" + string)
+        print("findJsonRegex: Error Found Multiple for: \n" + String)
     return json.loads(jsonString[0])
 
 
-# split the comments by line into a dictionary
-def comments(comments):
+def comments(Comments):
     """
     Split the Line Breaks in the Comments and return a Dictionary of the Comments
     """
     commentDict = {}
-    if comments is not None:
-        for i, line in enumerate(comments.splitlines()):
+    if Comments is not None:
+        for i, line in enumerate(Comments.splitlines()):
             if i == 0:
                 commentDict["Customer"] = line
             elif i == 1:
@@ -118,9 +117,9 @@ class TCP:
         self.FileLocation = FileLocation
         self.FileName = os.path.basename(FileLocation)
         self.FileDirectory = os.path.dirname(FileLocation)
-        self.FileType = getFileType(self.FileLocation)
-        self.FirstLine = firstLine(self.FileLocation)
-        self.RawInfo = findJsonRegex(self.FirstLine)
+        self.FileType = get_file_type(self.FileLocation)
+        self.FirstLine = tcp_first_line(self.FileLocation)
+        self.RawInfo = json_regex_test(self.FirstLine)
         self.info = TCPInfoObject(self.RawInfo)
 
     def getFileType(self):
@@ -168,11 +167,3 @@ class TCP:
         Returns the Formatted JSON For the TCP Object with FileInfo
         """
         return json.dumps(self.dict(), indent=4)
-
-if __name__ == "__main__":
-    # ! Test Code
-    from pprint import pprint
-    tcpFile = "/Users/mitchellaha/Desktop/TCPDemoFile.tcp"
-    tcp = TCP(tcpFile)
-    pprint(tcp.dict())
-    # print(tcp.json())
