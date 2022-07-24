@@ -5,7 +5,7 @@ import os
 
 def save_to_JSON(Dictionary: dict, FileName: str):  # ? Unused in Main
     """
-    Saves the dictionary to a JSON file
+    Saves the dictionary to a JSON file in the /output/ directory
     """
     # make directory if it doesn't exist
     if not os.path.exists("output"):
