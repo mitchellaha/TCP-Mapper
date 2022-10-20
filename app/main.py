@@ -4,7 +4,7 @@ from handlers.metadata_handler import get_file_metadata
 from handlers.mongodb_handler import FILE_Mongo
 from handlers.tcp_handler import TCP
 from utils.datetime_utils import metadata_dt_convert
-from utils.file_utils import isPDF, isTCP, get_files_from_directory, get_file_type
+from utils.file_utils import get_files_from_directory, get_file_type
 
 PDF_MONGO = FILE_Mongo("pdf")  # ? Not sure if I Should make this a constant or not...
 TCP_MONGO = FILE_Mongo("tcp")  # ? Not sure if I Should make this a constant or not...

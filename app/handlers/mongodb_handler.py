@@ -1,10 +1,4 @@
-# ALSO SEE /utils/tcr_utils.py
-# ALSO SEE /utils/mongo_utils.py
-
-import datetime as dt
-import json
 import os
-from pprint import pprint as pp
 
 from dotenv import load_dotenv
 from pymongo import MongoClient
@@ -13,6 +7,7 @@ load_dotenv()
 
 
 MONGO_CLIENT = MongoClient(os.getenv("MONGO_SRV_URL"))
+
 
 class FILE_Mongo:
     def __init__(self, Collection: str):
@@ -110,3 +105,23 @@ class FILE_Mongo:
         if Path is None:
             Path = DictionaryToDelete["Path"]
         self.MONGO_COLLECTION.delete_one({"Path": Path})
+
+    class utils:
+        def list_everyone_owner_mongoDB(Database):
+            """
+            Lists all the files in monogoDB where the owner is "everyone".
+
+            All File Paths Returned need to be re-run once network drive is connected fully.
+
+            params
+            ------
+            Database: string
+                Name of the database
+
+            returns
+            -------
+            files: list
+                List of file paths where the MongoDB owner is "everyone"
+            """
+            db = MONGO_CLIENT[Database]
+            return [file["Path"] for file in db.files.find({"Owner": "Everyone"}, {"_id": 0, "Path": 1})]

@@ -1,17 +1,7 @@
 import os
+import errno
+import json
 
-
-def isTCP(file):  # TODO: Consider Removal
-    if file.endswith(".tcp"):
-        return True
-    else:
-        return False
-
-def isPDF(file):  # TODO: Consider Removal
-    if file.endswith(".pdf"):
-        return True
-    else:
-        return False
 
 def get_file_type(FileName):
     """
@@ -45,3 +35,19 @@ def get_files_from_directory(Directory):
         for file in files:
             allFileNames.append(os.path.join(subdir, file))
     return allFileNames
+
+
+def save_to_JSON(Dictionary: dict, FileName: str):  # ? Unused in Main
+    """
+    Saves the dictionary to a JSON file in the /output/ directory
+    """
+    # make directory if it doesn't exist
+    if not os.path.exists("output"):
+        try:
+            os.makedirs("output")
+        except OSError as exc:  # Guard against
+            if exc.errno != errno.EEXIST:
+                raise
+    with open("./output/" + FileName, "w") as f:
+        json.dump(Dictionary, f)
+        f.close()
