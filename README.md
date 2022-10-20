@@ -1,6 +1,8 @@
 # TCP-Mapper
 
-....Info....
+1. Scans the provided directory
+2. Extracts Windows Metadata & TCP Information
+3. Inserts Data to MongoDB
 
 ## Guide
 
