@@ -1,45 +1,37 @@
 # TCP-Mapper
 
-Extracts JSON String From .tcp Files in Provided Directory and Outputs to **.json** or **.geojson** feature collection.
+1. Scans the provided directory
+2. Extracts Windows Metadata & TCP Information
+3. Inserts Data to MongoDB
 
-### Python Environment Setup
+## Guide
 
-1. Setup The Environment
+1. Setup The Python Environment
 
-    ~~~
-    $ python3 -m venv env
-    ~~~
+    ```$ python3 -m venv env```
 
-2. Set The Environment
+    ```$ source env/bin/activate```
 
-    ~~~
-    $ source env/bin/activate
-    ~~~
+    ```$ pip install -r requirements.txt```
 
-3. Install Dependencies 
+2. Add MongoDB SRV URL To Environment Variables
 
-    ~~~
-    $ pip install -r requirements.txt
-    ~~~
+    ```$ export MONGO_SRV_URL="mongodb+srv://<....>"```
 
-4. Confirm Python Environment
+3. Updated Directories_To_Run.json
 
-    ~~~
-    $ which python
-    ~~~
+4. Run TCP_Tool.py
 
-----
+    ```$ python3 TCP_Tool.py ```
 
-### Build Guide
 
-Single File Standalone Build
+### Issue: *File Owners Listed as Everyone*
 
-```
-pyinstaller -F -i src\ico\icon.ico main.py
-```
-
-Un-Packed Standalone Build
-
-```
-pyinstaller -F -i src\ico\icon.ico main.py
+1. Make sure owners are now showing on network drive.
+2. Do the Below. 
+```python
+    TCP_MONGO = FILE_Mongo("tcp")
+    everyoneOwnerFiles = TCP_MONGO.get_everyone_owner()
+    for file in everyoneOwnerFiles:
+        process_single_file(file, Update=True)
 ```

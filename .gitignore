@@ -1,8 +1,11 @@
+# Old Local Dump Folder
+.old/
+
 # Rapidplan TCPs
 .tcp
 
-# MapData Folder
-MapData/
+# TCPMAPPER_OUTPUT Folder
+TCPMAPPER_OUTPUT/
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
