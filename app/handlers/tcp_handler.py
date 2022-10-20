@@ -81,6 +81,7 @@ class TCPInfoObject(object):
         if self.OriginLng and self.OriginLat is not None:  # Converts OriginLng and OriginLat to Decimal
             self.OriginLng = float(self.OriginLng)
             self.OriginLat = float(self.OriginLat)
+            self.location = {"type": "Point", "coordinates": [self.OriginLng, self.OriginLat]}
 
     def dict(self) -> dict:
         """
