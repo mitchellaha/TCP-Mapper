@@ -4,7 +4,7 @@ import re
 from datetime import datetime as dt
 
 
-def tcp_first_line(FilePath):
+def tcp_first_line(FilePath) -> str:
     """
     Opens the TCP File and Returns the First Text Line of the TCP File
     """
@@ -13,7 +13,7 @@ def tcp_first_line(FilePath):
     return first_line
 
 
-def json_regex_test(String):
+def json_regex_test(String) -> dict:
     """
     Finds the JSON String in the TCP File and returns the JSON String
     """
@@ -23,7 +23,7 @@ def json_regex_test(String):
     return json.loads(jsonString[0])
 
 
-def comments(Comments):
+def comments(Comments) -> dict:
     """
     Split the Line Breaks in the Comments and return a Dictionary of the Comments
     """
@@ -82,13 +82,11 @@ class TCPInfoObject(object):
             self.OriginLng = float(self.OriginLng)
             self.OriginLat = float(self.OriginLat)
 
-    def dict(self):
+    def dict(self) -> dict:
         """
         Returns the Formatted and Flattened Dictionary of the TCPInfoObject Object
         """
         dict = self.__dict__
-        # ? Converts the CreatedOn DateTime to a Datetime String
-        # dict["CreatedOn"] = dict["CreatedOn"].__str__()  # ?? Why Do This ??
         return dict
 
 
@@ -104,19 +102,19 @@ class TCP:
         self.RawInfo = json_regex_test(self.FirstLine)
         self.info = TCPInfoObject(self.RawInfo)
 
-    def first_line(self):
+    def first_line(self) -> str:
         """
         Returns the First Line of the TCP/TCT File
         """
         return self.FirstLine
 
-    def raw_info(self):
+    def raw_info(self) -> dict:
         """
         Returns the Raw TCP Dictionary
         """
         return self.RawInfo
 
-    def infoDict(self):
+    def infoDict(self) -> dict:
         """
         Returns the Formatted TCP Info Dictionary.
 
@@ -124,7 +122,7 @@ class TCP:
         """
         return self.info.dict()
 
-    def dict(self):
+    def dict(self) -> dict:
         """
         Returns the Flattened Dictionary of the TCP Object with FileInfo
         """
