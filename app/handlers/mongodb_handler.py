@@ -106,22 +106,21 @@ class FILE_Mongo:
             Path = DictionaryToDelete["Path"]
         self.MONGO_COLLECTION.delete_one({"Path": Path})
 
-    class utils:
-        def list_everyone_owner_mongoDB(Database):
-            """
-            Lists all the files in monogoDB where the owner is "everyone".
 
-            All File Paths Returned need to be re-run once network drive is connected fully.
+    def get_everyone_owner(self):
+        """
+        Lists all the files in monogoDB where the owner is "everyone".
 
-            params
-            ------
-            Database: string
-                Name of the database
+        All File Paths Returned need to be re-run once network drive is connected fully.
 
-            returns
-            -------
-            files: list
-                List of file paths where the MongoDB owner is "everyone"
-            """
-            db = MONGO_CLIENT[Database]
-            return [file["Path"] for file in db.files.find({"Owner": "Everyone"}, {"_id": 0, "Path": 1})]
+        params
+        ------
+        Database: string
+            Name of the database
+
+        returns
+        -------
+        files: list
+            List of file paths where the MongoDB owner is "everyone"
+        """
+        return [file["Path"] for file in self.MONGO_COLLECTION.find({"Owner": "Everyone"}, {"_id": 0, "Path": 1})]

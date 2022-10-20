@@ -1,15 +1,14 @@
-import os
-
-from handlers.metadata_handler import get_file_metadata
-from handlers.mongodb_handler import FILE_Mongo
-from handlers.tcp_handler import TCP
-from utils.datetime_utils import metadata_dt_convert
-from utils.file_utils import get_files_from_directory, get_file_type
+from app.handlers.metadata_handler import get_file_metadata
+from app.handlers.mongodb_handler import FILE_Mongo
+from app.handlers.tcp_handler import TCP
+from app.utils.datetime_utils import metadata_dt_convert
+from app.utils.file_utils import get_file_type
 
 PDF_MONGO = FILE_Mongo("pdf")  # ? Not sure if I Should make this a constant or not...
 TCP_MONGO = FILE_Mongo("tcp")  # ? Not sure if I Should make this a constant or not...
 
-def file_runner(FilePath):
+
+def get_file_data(FilePath):
     """
     Returns a dictionary of the file's metadata and information if plan.
     
@@ -41,6 +40,9 @@ def process_single_file(FilePath, Update=False):
     ------
     FilePath: string
         Path to the file to be processed and inserted into the database.
+    Update: boolean
+        If True - Existing Files Shall Be Updated In Database
+        If False - Existing Files Will Be Ignored
     """
     fileType = get_file_type(FilePath)
     if fileType == "pdf":
@@ -48,50 +50,17 @@ def process_single_file(FilePath, Update=False):
             print("File already exists in the database: " + str(FilePath))
             if Update:
                 print("...Updating file")
-                PDF_MONGO.update_one(file_runner(FilePath))
+                PDF_MONGO.update_one(get_file_data(FilePath))
         else:
-            PDF_MONGO.insert_one(file_runner(FilePath))
+            PDF_MONGO.insert_one(get_file_data(FilePath))
     elif fileType == "tcp":
         if TCP_MONGO.check_if_exists(Path=FilePath):
             print("File already exists in the database: " + str(FilePath))
             if Update:
                 print("...Updating file")
-                TCP_MONGO.update_one(file_runner(FilePath))
+                TCP_MONGO.update_one(get_file_data(FilePath))
         else:
-            TCP_MONGO.insert_one(file_runner(FilePath))
-    else:
-        print("Not a PDF or TCP: " + str(FilePath))
-
-
-def update_single_file(FilePath):
-    """
-    Updates a single file in the database if it is already in the database.
-    
-    params
-    ------
-    FilePath: string
-        Path to the file to be analyzed
-        
-    returns
-    -------
-    None
-    """
-    fileType = get_file_type(FilePath)
-
-    if fileType == "pdf":
-        if PDF_MONGO.check_if_exists(Path=FilePath):
-            PDF_MONGO.update_one(file_runner(FilePath))
-        else:
-            print("File not in the database: " + str(FilePath))
-            print("Consider running process_single_file()")
-
-    elif fileType == "tcp":
-        if TCP_MONGO.check_if_exists(Path=FilePath):
-            TCP_MONGO.update_one(file_runner(FilePath))
-        else:
-            print("File not in the database: " + str(FilePath))
-            print("Consider running process_single_file()")
-
+            TCP_MONGO.insert_one(get_file_data(FilePath))
     else:
         print("Not a PDF or TCP: " + str(FilePath))
 
@@ -106,6 +75,9 @@ def process_file_list(FileList, Update=False):
     ------
     FileList: list
         List of files WITH FULL PATH to be processed and inserted into the database.
+    Update: boolean
+        If True - Existing Files Shall Be Updated In Database
+        If False - Existing Files Will Be Ignored
     """
     pdfList = []
     tcpList = []
@@ -117,20 +89,20 @@ def process_file_list(FileList, Update=False):
                 print("File already exists in the database: " + str(file))
                 if Update:
                     print("...Updating file")
-                    PDF_MONGO.update_one(file_runner(file))
+                    PDF_MONGO.update_one(get_file_data(file))
                 pass
             else:
-                pdfList.append(file_runner(file))
+                pdfList.append(get_file_data(file))
 
         elif fileType == "tcp":
             if TCP_MONGO.check_if_exists(Path=file):
                 print("File already exists in the database: " + str(file))
                 if Update:
                     print("...Updating file")
-                    PDF_MONGO.update_one(file_runner(file))
+                    PDF_MONGO.update_one(get_file_data(file))
                 pass
             else:
-                tcpList.append(file_runner(file))
+                tcpList.append(get_file_data(file))
 
         else:
             print("Not a PDF or TCP: " + str(file))
@@ -139,39 +111,3 @@ def process_file_list(FileList, Update=False):
         PDF_MONGO.insert_many(pdfList)
     if len(tcpList) > 0:
         TCP_MONGO.insert_many(tcpList)
-
-
-def process_from_directory(RootDirectory):
-    """
-    Processes all files in a directory and its subdirectories then inserts them into the database if PDF or TCP.
-
-    params
-    ------
-    rootDirectory: string
-        Path to the root directory of the files to be processed and inserted into the database.
-    """
-    allFilesList = get_files_from_directory(RootDirectory)
-    process_file_list(allFilesList)
-
-
-if __name__ == "__main__":
-
-    newDirectoryList = [
-        "Z:\\. 2021 - PDF",
-        "Z:\\. 2022 - PDF",
-        "Z:\\. 2021 - TCP",
-        "Z:\\. 2022 - TCP"
-    ]
-
-    oldDirectoryList = [
-        "Z:\\~ PDF & PLANS ARCHIVE\\~ 2020 PDF",
-        "Z:\\~ PDF & PLANS ARCHIVE\\~ 2020 TCP",
-        "Z:\\~ PDF & PLANS ARCHIVE\\2019 PDF",
-        "Z:\\~ PDF & PLANS ARCHIVE\\2019 TCP",
-        "Z:\\~ PDF & PLANS ARCHIVE\\2018 PDF",
-        "Z:\\~ PDF & PLANS ARCHIVE\\2018 TCP",
-        "Z:\\~ PDF & PLANS ARCHIVE\\2017 PDF",
-        "Z:\\~ PDF & PLANS ARCHIVE\\2017 TCP",
-        "Z:\\~ PDF & PLANS ARCHIVE\\Project Plans 2018 & 19 2.83gb",
-        "Z:\\~ PDF & PLANS ARCHIVE\\Project Plans 2017"
-    ]
